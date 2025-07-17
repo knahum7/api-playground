@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// Mock credentials (for testing)
-const MOCK_APP_SECRET = "yourAppSecretKey";
-const MOCK_RESTAURANT_SECRET = "yourRestaurantSecretKey";
+import { createClient } from "../../../lib/supabase/client";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,14 +13,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Simulate basic credential check
-    if (
-      appSecretKey === MOCK_APP_SECRET &&
-      restaurantSecretKey === MOCK_RESTAURANT_SECRET
-    ) {
+    const supabase = createClient();
+
+    // Query for the row with the given restaurantSecretKey
+    const { data, error } = await supabase
+      .from("getir_restaurants")
+      .select("token, restaurant_id, app_secret_key")
+      .eq("restaurant_secret_key", restaurantSecretKey)
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: "Database error" }, { status: 500 });
+    }
+
+    if (data && data.app_secret_key === appSecretKey) {
       return NextResponse.json({
-        restaurantId: "mock-restaurant-123",
-        token: "mock-jwt-token-abc123xyz",
+        restaurantId: data.restaurant_id,
+        token: data.token,
       });
     } else {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });

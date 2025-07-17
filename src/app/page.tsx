@@ -38,6 +38,14 @@ export default function Home() {
           >
             Open Restaurant
           </Link>
+          <Link
+            href="/getir/restaurant/working-hours"
+            className="w-full text-center bg-indigo-600 text-white font-semibold py-2 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-label="Go to Getir Working Hours page"
+            tabIndex={0}
+          >
+            Get/Modify Working Hours
+          </Link>
         </div>
         <div className="flex flex-col items-center gap-6">
           <h1 className="text-3xl font-bold mb-4">Trendyol API</h1>
@@ -50,12 +58,20 @@ export default function Home() {
             Get Supplier Stores
           </Link>
           <Link
-            href="/trendyol/suppliers/10/stores/1/store"
+            href="/trendyol/suppliers/10/stores/1/status"
             className="w-full text-center bg-pink-600 text-white font-semibold py-2 rounded hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
             aria-label="Go to Trendyol Store Status page"
             tabIndex={0}
           >
-            Change Store Status
+            Modify Store Status
+          </Link>
+          <Link
+            href="/trendyol/suppliers/mock-supplier/stores/mock-store/working-hours"
+            className="w-full text-center bg-purple-800 text-white font-semibold py-2 rounded hover:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-800"
+            aria-label="Go to Trendyol Store Working Hours page"
+            tabIndex={0}
+          >
+            Modify Working Hours
           </Link>
         </div>
         <div className="flex flex-col items-center gap-6">

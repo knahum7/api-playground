@@ -13,6 +13,7 @@ const Page = () => {
   const [restaurantSecretKey, setRestaurantSecretKey] = useState("");
   const [response, setResponse] = useState<LoginResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -100,8 +101,25 @@ const Page = () => {
               <span>{response.error}</span>
             ) : (
               <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Token:</span> {response.token}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (response.token) {
+                        navigator.clipboard.writeText(response.token);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 1500);
+                      }
+                    }}
+                    className="ml-2 px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    aria-label="Copy token to clipboard"
+                    tabIndex={0}
+                  >
+                    {copied ? "Copied!" : "Copy"}
+                  </button>
+                </div>
                 <div><span className="font-medium">Restaurant ID:</span> {response.restaurantId}</div>
-                <div><span className="font-medium">Token:</span> {response.token}</div>
               </div>
             )}
           </div>
