@@ -24,7 +24,7 @@ const Page = () => {
     try {
       const res = await fetch("/api/getir/restaurants/status/open", {
         method: "PUT",
-        headers: { token },
+        headers: { Authorization: token },
       });
       const data = await res.json();
       setResponse(data);

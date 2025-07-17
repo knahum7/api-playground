@@ -1,18 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// Mock token for authentication
-const MOCK_TOKEN = "mock-jwt-token-abc123xyz";
-
-// Mock restaurant data
-const MOCK_RESTAURANT = {
-  id: "mock-restaurant-123",
-  averagePreparationTime: 20,
-  status: 1,
-  isCourierAvailable: true,
-  name: "Mock Burger House",
-  isStatusChangedByUser: false,
-  closedSource: 0,
-};
+import { createClient } from "../../../lib/supabase/client";
 
 export async function GET(req: NextRequest) {
   const token = req.headers.get("token");
@@ -21,9 +8,24 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing token" }, { status: 400 });
   }
 
-  if (token !== MOCK_TOKEN) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("getir_restaurants")
+    .select("restaurant_id, averagePreparationTime, status, isCourierAvailable, restaurant_name, isStatusChangedByUser, closedSource")
+    .eq("token", token)
+    .single();
+
+  if (error || !data) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 
-  return NextResponse.json(MOCK_RESTAURANT);
+  return NextResponse.json({
+    id: data.restaurant_id,
+    averagePreparationTime: data.averagePreparationTime,
+    status: data.status,
+    isCourierAvailable: data.isCourierAvailable,
+    name: data.restaurant_name,
+    isStatusChangedByUser: data.isStatusChangedByUser,
+    closedSource: data.closedSource,
+  });
 }

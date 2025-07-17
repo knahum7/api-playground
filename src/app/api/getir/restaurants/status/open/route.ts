@@ -1,19 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// Mock valid token
-const MOCK_TOKEN = "mock-jwt-token-abc123xyz";
+import { createClient } from "../../../../../lib/supabase/client";
 
 export async function PUT(req: NextRequest) {
-  const token = req.headers.get("token");
+  const token = req.headers.get("Authorization");
 
   if (!token) {
     return NextResponse.json({ error: "Missing token" }, { status: 400 });
   }
 
-  if (token !== MOCK_TOKEN) {
+  const supabase = createClient();
+  // Check if the restaurant with the given token exists
+  const { data, error } = await supabase
+    .from("getir_restaurants")
+    .select("restaurant_id")
+    .eq("token", token)
+    .single();
+
+  if (error || !data) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 
-  // Simulate successful restaurant opening
+  // Update the status to 1
+  const { error: updateError } = await supabase
+    .from("getir_restaurants")
+    .update({ status: 1 })
+    .eq("token", token);
+
+  if (updateError) {
+    return NextResponse.json({ error: "Failed to update status" }, { status: 500 });
+  }
+
   return NextResponse.json({ message: "Restaurant is now open" }, { status: 200 });
 }
