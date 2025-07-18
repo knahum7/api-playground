@@ -1,25 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@/app/lib/supabase/client";
 
-// In-memory mock store status storage
-const STORE_STATUSES: Record<string, "OPEN" | "CLOSED"> = {
-  "10_1": "OPEN", // key format: `${supplierId}_${storeId}`
-};
+function parseBasicAuth(authHeader: string | null) {
+  if (!authHeader || !authHeader.startsWith("Basic ")) return null;
+  try {
+    const base64 = authHeader.replace("Basic ", "");
+    const [apiKey, apiSecret] = atob(base64).split(":");
+    return { apiKey, apiSecret };
+  } catch {
+    return null;
+  }
+}
 
 export async function PUT(
   req: NextRequest,
   { params }: { params: { supplierId: string; storeId: string } }
 ) {
   const { supplierId, storeId } = params;
-  const key = `${supplierId}_${storeId}`;
-
-  // Validate headers
-  const apiKey = req.headers.get("api-key");
-  const apiSecret = req.headers.get("api-secret");
-  if (apiKey !== "mock-api-key" || apiSecret !== "mock-api-secret") {
-    return NextResponse.json(
-      { error: "Unauthorized: Invalid API credentials" },
-      { status: 401 }
-    );
+  const auth = parseBasicAuth(req.headers.get("authorization"));
+  const userAgent = req.headers.get("user-agent");
+  if (!userAgent || userAgent !== `${supplierId} - SelfIntegration`) {
+    return NextResponse.json({ error: "Forbidden: Invalid or missing User-Agent" }, { status: 403 });
+  }
+  if (!auth || !auth.apiKey || !auth.apiSecret) {
+    return NextResponse.json({ error: "Unauthorized: Invalid Basic Auth" }, { status: 401 });
   }
 
   let body;
@@ -30,7 +34,6 @@ export async function PUT(
   }
 
   const { status } = body;
-
   if (!["OPEN", "CLOSED"].includes(status)) {
     return NextResponse.json(
       { error: "Invalid status. Must be 'OPEN' or 'CLOSED'" },
@@ -38,16 +41,33 @@ export async function PUT(
     );
   }
 
-  // Simulate optimistic concurrency issue for demo
-  if (Math.random() < 0.05) {
-    return NextResponse.json(
-      { error: "Conflict: Working status recently changed. Try again." },
-      { status: 400 }
-    );
+  const supabase = createClient();
+  // Find the restaurant
+  const { data, error } = await supabase
+    .from("trendyol_restaurants")
+    .select("id")
+    .eq("supplier_id", supplierId)
+    .eq("id", storeId)
+    .eq("apikey", auth.apiKey)
+    .eq("apisecret", auth.apiSecret)
+    .single();
+
+  if (error || !data) {
+    return NextResponse.json({ error: "Store not found or unauthorized" }, { status: 404 });
   }
 
-  // Update mock store status
-  STORE_STATUSES[key] = status;
+  // Update working_status
+  const { error: updateError } = await supabase
+    .from("trendyol_restaurants")
+    .update({ working_status: status })
+    .eq("id", storeId)
+    .eq("supplier_id", supplierId)
+    .eq("apikey", auth.apiKey)
+    .eq("apisecret", auth.apiSecret);
+
+  if (updateError) {
+    return NextResponse.json({ error: updateError.message }, { status: 500 });
+  }
 
   return NextResponse.json({
     message: `Store ${storeId} of supplier ${supplierId} is now marked as '${status}'`,

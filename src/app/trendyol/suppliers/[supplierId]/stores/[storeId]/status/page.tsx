@@ -23,12 +23,13 @@ const Page = () => {
     setLoading(true);
     setResponse(null);
     try {
+      const basicAuth = btoa(`${apiKey}:${apiSecret}`);
       const res = await fetch(`/api/trendyol/suppliers/${supplierId}/stores/${storeId}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "api-key": apiKey,
-          "api-secret": apiSecret,
+          "Authorization": `Basic ${basicAuth}`,
+          "User-Agent": `${supplierId} - SelfIntegration`,
         },
         body: JSON.stringify({ status }),
       });

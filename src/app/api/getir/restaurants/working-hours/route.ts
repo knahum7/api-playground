@@ -4,8 +4,6 @@ import { createClient } from '../../../../lib/supabase/client';
 // GET: Return DB data
 export async function GET(req: NextRequest) {
   const token = req.headers.get('Authorization');
-  console.log("GET - Received token:", token);
-  console.log("GET - All headers:", Object.fromEntries(req.headers.entries()));
 
   if (!token) {
     return NextResponse.json({ error: 'Missing token' }, { status: 400 });
@@ -17,8 +15,6 @@ export async function GET(req: NextRequest) {
     .select('restaurantWorkingHours, courierWorkingHours')
     .eq('token', token)
     .single();
-
-  console.log("GET - Database query result:", { data, error });
 
   if (error || !data) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -37,7 +33,6 @@ export async function GET(req: NextRequest) {
 // PUT: Update restaurant working hours
 export async function PUT(req: NextRequest) {
   const token = req.headers.get('Authorization');
-  console.log("PUT - Received token:", token);
 
   if (!token) {
     return NextResponse.json({ error: 'Missing token' }, { status: 400 });
@@ -49,8 +44,6 @@ export async function PUT(req: NextRequest) {
     .select('restaurant_id')
     .eq('token', token)
     .single();
-
-  console.log("PUT - Database query result:", { data, error });
 
   if (error || !data) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

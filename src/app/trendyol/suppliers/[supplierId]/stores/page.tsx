@@ -4,11 +4,24 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 
 type Restaurant = {
-  id: number;
+  id: string;
   name: string;
+  supplier_id: string;
+  working_status: string;
   address: string;
-  workingStatus: string;
-  averageOrderPreparationTimeInMin: number;
+  location: { latitude: string; longitude: string };
+  average_order_preparation_time_in_min: number;
+  delivery_type: string;
+  phone_number: string;
+  email: string;
+  creation_date: string;
+  last_modified_date: string;
+  working_hours: Array<{
+    dayOfWeek: string;
+    openingTime: string;
+    closingTime: string;
+  }>;
+  integrator: string;
 };
 
 type ApiResponse = {
@@ -34,11 +47,12 @@ const Page = () => {
     setLoading(true);
     setResponse(null);
     try {
+      const basicAuth = btoa(`${apiKey}:${apiSecret}`);
       const res = await fetch(`/api/trendyol/suppliers/${supplierId}/stores?page=${page}&size=${size}`, {
         method: "GET",
         headers: {
-          "api-key": apiKey,
-          "api-secret": apiSecret,
+          "Authorization": `Basic ${basicAuth}`,
+          "User-Agent": `${supplierId} - SelfIntegration`,
         },
       });
       const data = await res.json();
@@ -157,8 +171,23 @@ const Page = () => {
                 <div className="mb-2 font-medium">Restaurants:</div>
                 <ul className="list-disc pl-5">
                   {response.restaurants?.map(r => (
-                    <li key={r.id} className="mb-1">
-                      <span className="font-semibold">{r.name}</span> (ID: {r.id}) - {r.address} - Status: {r.workingStatus} - Prep Time: {r.averageOrderPreparationTimeInMin} min
+                    <li key={r.id} className="mb-2">
+                      <div className="font-semibold">{r.name} (ID: {r.id})</div>
+                      <div className="text-xs text-gray-700 mb-1">Supplier ID: {r.supplier_id} | Status: {r.working_status} | Prep Time: {r.average_order_preparation_time_in_min} min</div>
+                      <div className="text-xs text-gray-700 mb-1">Address: {r.address}</div>
+                      <div className="text-xs text-gray-700 mb-1">Location: Lat {r.location.latitude}, Lng {r.location.longitude}</div>
+                      <div className="text-xs text-gray-700 mb-1">Phone: {r.phone_number} | Email: {r.email}</div>
+                      <div className="text-xs text-gray-700 mb-1">Delivery Type: {r.delivery_type} | Integrator: {r.integrator}</div>
+                      <div className="text-xs text-gray-700 mb-1">Created: {r.creation_date} | Last Modified: {r.last_modified_date}</div>
+                      <div className="text-xs text-gray-700 mb-1">Working Hours:
+                        <ul className="list-disc pl-4">
+                          {r.working_hours.map((wh, i) => (
+                            <li key={i}>
+                              {wh.dayOfWeek}: {wh.openingTime} - {wh.closingTime}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </li>
                   ))}
                 </ul>

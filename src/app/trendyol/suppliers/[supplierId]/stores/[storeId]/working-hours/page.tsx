@@ -52,12 +52,13 @@ const Page = () => {
     setResponse(null);
     setError(null);
     try {
+      const basicAuth = btoa(`${apiKey}:${apiSecret}`);
       const res = await fetch(`/api/trendyol/suppliers/${supplierId}/stores/${storeId}/working-hours`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "api-key": apiKey,
-          "api-secret": apiSecret,
+          "Authorization": `Basic ${basicAuth}`,
+          "User-Agent": `${supplierId} - SelfIntegration`,
         },
         body: JSON.stringify({ workingHours }),
       });
