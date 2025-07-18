@@ -47,18 +47,22 @@ export async function PUT(
   }
 
   const supabase = createClient();
-  // Find the restaurant
+  // Find the restaurant (case-sensitive, strict check)
   const { data, error } = await supabase
     .from("trendyol_restaurants")
-    .select("id")
+    .select("id, apikey, apisecret")
     .eq("supplier_id", uaSupplierId)
     .eq("integrator", uaIntegrator)
     .eq("id", storeId)
-    .eq("apikey", auth.apiKey)
-    .eq("apisecret", auth.apiSecret)
     .single();
 
-  if (error || !data) {
+  // Defensive, case-sensitive check for API key and secret
+  if (
+    error ||
+    !data ||
+    data.apikey?.trim() !== auth.apiKey ||
+    data.apisecret?.trim() !== auth.apiSecret
+  ) {
     return NextResponse.json({ error: "Store not found or unauthorized" }, { status: 404 });
   }
 

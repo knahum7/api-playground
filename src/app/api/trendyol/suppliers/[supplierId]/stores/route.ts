@@ -41,23 +41,30 @@ export async function GET(
     .from("trendyol_restaurants")
     .select("*")
     .eq("supplier_id", uaSupplierId)
-    .eq("integrator", uaIntegrator)
-    .eq("apikey", auth.apiKey)
-    .eq("apisecret", auth.apiSecret);
+    .eq("integrator", uaIntegrator);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  if (!data || data.length === 0) {
+  // Defensive, case-sensitive check for API key and secret
+  const filtered = (data || []).filter(
+    (r) =>
+      typeof r.apikey === "string" &&
+      typeof r.apisecret === "string" &&
+      r.apikey.trim() === auth.apiKey &&
+      r.apisecret.trim() === auth.apiSecret
+  );
+
+  if (filtered.length === 0) {
     return NextResponse.json({ restaurants: [], totalPages: 0, totalElements: 0 });
   }
 
   // Pagination
   const start = (page - 1) * size;
   const end = start + size;
-  const paged = data.slice(start, end);
-  const totalPages = Math.ceil(data.length / size);
+  const paged = filtered.slice(start, end);
+  const totalPages = Math.ceil(filtered.length / size);
 
   // Parse JSON fields
   const restaurants = paged.map((r) => ({
@@ -80,6 +87,6 @@ export async function GET(
   return NextResponse.json({
     restaurants,
     totalPages,
-    totalElements: data.length,
+    totalElements: filtered.length,
   });
 }
