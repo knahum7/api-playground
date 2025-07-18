@@ -17,6 +17,7 @@ const Page = () => {
   const [status, setStatus] = useState(STATUS_OPTIONS[0]);
   const [response, setResponse] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [integrator, setIntegrator] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,7 +30,7 @@ const Page = () => {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Basic ${basicAuth}`,
-          "User-Agent": `${supplierId} - SelfIntegration`,
+          "x-integrator-info": `${supplierId} - ${integrator}`,
         },
         body: JSON.stringify({ status }),
       });
@@ -102,6 +103,18 @@ const Page = () => {
           onChange={e => setApiSecret(e.target.value)}
           className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="API Secret"
+          tabIndex={0}
+          required
+        />
+        <label htmlFor="integrator" className="font-medium">Integrator</label>
+        <input
+          id="integrator"
+          name="integrator"
+          type="text"
+          value={integrator}
+          onChange={e => setIntegrator(e.target.value)}
+          className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Integrator"
           tabIndex={0}
           required
         />

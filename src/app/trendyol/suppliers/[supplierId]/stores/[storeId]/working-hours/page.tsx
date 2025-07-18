@@ -39,6 +39,7 @@ const Page = () => {
   const [response, setResponse] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [integrator, setIntegrator] = useState("");
 
   const handleWorkingHourChange = (index: number, field: keyof WorkingHour, value: string) => {
     setWorkingHours((prev) =>
@@ -58,7 +59,7 @@ const Page = () => {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Basic ${basicAuth}`,
-          "User-Agent": `${supplierId} - SelfIntegration`,
+          "x-integrator-info": `${supplierId} - ${integrator}`,
         },
         body: JSON.stringify({ workingHours }),
       });
@@ -135,6 +136,18 @@ const Page = () => {
           onChange={e => setApiSecret(e.target.value)}
           className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="API Secret"
+          tabIndex={0}
+          required
+        />
+        <label htmlFor="integrator" className="font-medium">Integrator</label>
+        <input
+          id="integrator"
+          name="integrator"
+          type="text"
+          value={integrator}
+          onChange={e => setIntegrator(e.target.value)}
+          className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Integrator"
           tabIndex={0}
           required
         />

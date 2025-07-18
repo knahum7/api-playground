@@ -18,9 +18,14 @@ export async function PUT(
 ) {
   const { supplierId, storeId } = params;
   const auth = parseBasicAuth(req.headers.get('authorization'));
-  const userAgent = req.headers.get('user-agent');
-  if (!userAgent || userAgent !== `${supplierId} - SelfIntegration`) {
-    return NextResponse.json({ error: 'Forbidden: Invalid or missing User-Agent' }, { status: 403 });
+  const integratorInfo = req.headers.get('x-integrator-info');
+  let uaSupplierId = '';
+  let uaIntegrator = '';
+  if (integratorInfo && integratorInfo.includes(' - ')) {
+    [uaSupplierId, uaIntegrator] = integratorInfo.split(' - ');
+  }
+  if (!uaSupplierId || !uaIntegrator || uaSupplierId !== supplierId) {
+    return NextResponse.json({ error: 'Forbidden: Invalid or missing Integrator Info' }, { status: 403 });
   }
   if (!auth || !auth.apiKey || !auth.apiSecret) {
     return NextResponse.json({ error: 'Unauthorized: Invalid Basic Auth' }, { status: 401 });
@@ -55,7 +60,8 @@ export async function PUT(
   const { data, error } = await supabase
     .from('trendyol_restaurants')
     .select('id')
-    .eq('supplier_id', supplierId)
+    .eq('supplier_id', uaSupplierId)
+    .eq('integrator', uaIntegrator)
     .eq('id', storeId)
     .eq('apikey', auth.apiKey)
     .eq('apisecret', auth.apiSecret)
@@ -70,7 +76,8 @@ export async function PUT(
     .from('trendyol_restaurants')
     .update({ working_hours: JSON.stringify(workingHours) })
     .eq('id', storeId)
-    .eq('supplier_id', supplierId)
+    .eq('supplier_id', uaSupplierId)
+    .eq('integrator', uaIntegrator)
     .eq('apikey', auth.apiKey)
     .eq('apisecret', auth.apiSecret);
 
