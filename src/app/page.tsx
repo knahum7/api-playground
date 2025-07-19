@@ -84,6 +84,14 @@ export default function Home() {
           <div className="flex flex-col items-center gap-6">
             <h1 className="text-3xl font-bold mb-4">Delivery Hero API</h1>
             <Link
+              href="/deliveryhero/login"
+              className="w-full text-center bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Go to DeliveryHero Login page"
+              tabIndex={0}
+            >
+              Get Access Token
+            </Link>
+            <Link
               href="/deliveryhero/availability-status/chain-1/pos-1"
               className="w-full text-center bg-blue-800 text-white font-semibold py-2 rounded hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-800"
               aria-label="Go to DeliveryHero Availability Status page"
