@@ -26,7 +26,7 @@ const Page = () => {
     setLoading(true);
     setResponse(null);
     try {
-      const res = await fetch("/api/getir/login", {
+      const res = await fetch("/api/getir/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ appSecretKey, restaurantSecretKey }),

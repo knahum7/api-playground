@@ -49,7 +49,7 @@ const Page = () => {
     setResponse(null);
     try {
       const basicAuth = btoa(`${apiKey}:${apiSecret}`);
-      const res = await fetch(`/api/trendyol/suppliers/${supplierId}/stores?page=${page}&size=${size}`, {
+      const res = await fetch(`/api/trendyol/integrator/store/meal/suppliers/${supplierId}/stores?page=${page}&size=${size}`, {
         method: "GET",
         headers: {
           "Authorization": `Basic ${basicAuth}`,
