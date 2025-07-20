@@ -53,25 +53,25 @@ export default function Home() {
               • Login Authentication
             </Link>
             <Link
-              href="/getir/restaurant"
+              href="/getir/restaurant-info"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Restaurant Information
             </Link>
             <Link
-              href="/getir/restaurant/status/open"
+              href="/getir/status-open"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Open Restaurant Status
             </Link>
             <Link
-              href="/getir/restaurant/status/close"
+              href="/getir/status-close"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Close Restaurant Status
             </Link>
             <Link
-              href="/getir/restaurant/working-hours"
+              href="/getir/working-hours"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Working Hours Management
@@ -92,19 +92,19 @@ export default function Home() {
           </p>
           <div className="space-y-2">
             <Link
-              href="/trendyol/suppliers/123/stores"
+              href="/trendyol/restaurant-info"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Supplier Stores List
             </Link>
             <Link
-              href="/trendyol/suppliers/123/stores/456/status"
+              href="/trendyol/status"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Store Status Management
             </Link>
             <Link
-              href="/trendyol/suppliers/123/stores/456/working-hours"
+              href="/trendyol/working-hours"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Store Working Hours
@@ -125,13 +125,13 @@ export default function Home() {
           </p>
           <div className="space-y-2">
             <Link
-              href="/deliveryhero/v2/login"
+              href="/deliveryhero/login"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Login Authentication
             </Link>
             <Link
-              href="/deliveryhero/v2/chains/chain123/remoteVendors/vendor456/availability"
+              href="/deliveryhero/availability"
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Availability Status Management
