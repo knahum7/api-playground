@@ -27,14 +27,15 @@ const Page = () => {
     setLoading(true);
     setResponse(null);
     try {
-      const res = await fetch("http://localhost:8000/api/getir/restaurants", {
-        method: "POST",
+      const res = await fetch(`http://localhost:8000/api/getir/restaurants?token=${encodeURIComponent(token)}`, {
+        method: "GET",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
       });
       const data = await res.json();
+      console.log("API Response:", data); // Debug log
       setResponse(data);
     } catch (error) {
+      console.error("Fetch error:", error); // Debug log
       setResponse({ error: "Network error" });
     } finally {
       setLoading(false);

@@ -48,10 +48,9 @@ const Page = () => {
     setEditWorkingHours(null);
     console.log("GET - Sending token:", token);
     try {
-      const res = await fetch("http://localhost:8000/api/getir/restaurants/working-hours", {
-        method: "POST",
+      const res = await fetch(`http://localhost:8000/api/getir/restaurants/working-hours?token=${encodeURIComponent(token)}`, {
+        method: "GET",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
       });
       console.log("GET - Response status:", res.status);
       const data = await res.json();
@@ -64,14 +63,14 @@ const Page = () => {
           data.restaurantWorkingHours?.map((h: WorkingHour) => {
             if ('closed' in h && h.closed) {
               return { day: h.day, closed: true };
-                      } else if ('workingHours' in h) {
-            return {
-              day: h.day,
-              workingHours: { ...h.workingHours }
-            };
-          } else {
-            return { day: h.day, closed: true };
-          }
+            } else if ('workingHours' in h) {
+              return {
+                day: h.day,
+                workingHours: { ...h.workingHours }
+              };
+            } else {
+              return { day: h.day, closed: true };
+            }
           }) || null
         );
       }
@@ -91,7 +90,7 @@ const Page = () => {
     setPutResponse(null);
     try {
       const res = await fetch("http://localhost:8000/api/getir/restaurants/working-hours", {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           token,

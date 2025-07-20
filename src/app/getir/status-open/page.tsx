@@ -23,7 +23,7 @@ const Page = () => {
     setResponse(null);
     try {
       const res = await fetch("http://localhost:8000/api/getir/restaurants/status/open", {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
       });
