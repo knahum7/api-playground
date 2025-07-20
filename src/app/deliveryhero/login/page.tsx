@@ -27,20 +27,21 @@ const Page = () => {
     setLoading(true);
     setResponse(null);
     try {
+      // Create form data for x-www-form-urlencoded
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('password', password);
+      formData.append('grant_type', 'client_credentials');
+
       const res = await fetch("http://localhost:8000/api/deliveryhero/v2/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          grant_type: "client_credentials"
-        }),
+        body: formData,
       });
       
       const data = await res.json();
       
       if (!res.ok) {
-        setResponse({ error: data.error || `HTTP ${res.status}: ${res.statusText}` });
+        setResponse({ error: data.detail || `HTTP ${res.status}: ${res.statusText}` });
         return;
       }
       

@@ -86,7 +86,7 @@ const Page = () => {
       
       if (!res.ok) {
         const errorData = await res.json();
-        setGetError(errorData.error || `HTTP ${res.status}: ${res.statusText}`);
+        setGetError(errorData.detail || `HTTP ${res.status}: ${res.statusText}`);
         return;
       }
       
@@ -142,7 +142,7 @@ const Page = () => {
       
       if (!res.ok) {
         const errorData = await res.json();
-        setPutError(errorData.error || `HTTP ${res.status}: ${res.statusText}`);
+        setPutError(errorData.detail || `HTTP ${res.status}: ${res.statusText}`);
         return;
       }
       
