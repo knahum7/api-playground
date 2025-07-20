@@ -8,7 +8,7 @@ type WorkingHour =
 
 type ApiResponse = {
   restaurantWorkingHours?: WorkingHour[];
-  courierWorkingHours?: WorkingHour[];
+  restaurantCourierHours?: WorkingHour[];
   error?: string;
 };
 
@@ -46,36 +46,38 @@ const Page = () => {
     setGetResponse(null);
     setGetError(null);
     setEditWorkingHours(null);
-    console.log("GET - Sending token:", token);
     try {
-      const res = await fetch(`http://localhost:8000/api/getir/restaurants/working-hours?token=${encodeURIComponent(token)}`, {
+      const res = await fetch("http://localhost:8000/api/getir/restaurants/working-hours", {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "token": token
+        },
       });
-      console.log("GET - Response status:", res.status);
-      const data = await res.json();
-      console.log("GET - Response data:", data);
-      if (data.error) {
-        setGetError(data.error);
-      } else {
-        setGetResponse(data);
-        setEditWorkingHours(
-          data.restaurantWorkingHours?.map((h: WorkingHour) => {
-            if ('closed' in h && h.closed) {
-              return { day: h.day, closed: true };
-            } else if ('workingHours' in h) {
-              return {
-                day: h.day,
-                workingHours: { ...h.workingHours }
-              };
-            } else {
-              return { day: h.day, closed: true };
-            }
-          }) || null
-        );
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        setGetError(errorData.detail || `HTTP ${res.status}: ${res.statusText}`);
+        return;
       }
+      
+      const data = await res.json();
+      setGetResponse(data);
+      setEditWorkingHours(
+        data.restaurantWorkingHours?.map((h: WorkingHour) => {
+          if ('closed' in h && h.closed) {
+            return { day: h.day, closed: true };
+          } else if ('workingHours' in h) {
+            return {
+              day: h.day,
+              workingHours: { ...h.workingHours }
+            };
+          } else {
+            return { day: h.day, closed: true };
+          }
+        }) || null
+      );
     } catch (e) {
-      console.log("GET - Network error:", e);
       setGetError("Network error");
     } finally {
       setGetLoading(false);
@@ -91,19 +93,27 @@ const Page = () => {
     try {
       const res = await fetch("http://localhost:8000/api/getir/restaurants/working-hours", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "token": token
+        },
         body: JSON.stringify({
-          token,
-          workingHours: editWorkingHours,
+          restaurantWorkingHours: editWorkingHours,
         }),
       });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        setPutError(errorData.detail || `HTTP ${res.status}: ${res.statusText}`);
+        return;
+      }
+      
       const data = await res.json();
+      // Handle both string and object responses
       if (typeof data === "string") {
         setPutResponse(data);
-      } else if (data.error) {
-        setPutError(data.error);
       } else {
-        setPutResponse("Working hours updated successfully");
+        setPutResponse(data.message || "Working hours updated successfully");
       }
     } catch (e) {
       setPutError("Network error");
@@ -232,7 +242,7 @@ const Page = () => {
                     Restaurant Courier Hours:
                   </div>
                   <ul className="list-disc pl-5">
-                    {getResponse?.courierWorkingHours?.map((h: WorkingHour) => (
+                    {getResponse?.restaurantCourierHours?.map((h: WorkingHour) => (
                       <li key={h.day}>
                         <span className="font-semibold">
                           {DAY_LABELS[h.day]}:

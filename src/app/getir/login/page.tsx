@@ -29,9 +29,18 @@ const Page = () => {
       const res = await fetch("http://localhost:8000/api/getir/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ appSecretKey, restaurantSecretKey }),
+        body: JSON.stringify({ 
+          appSecretKey, 
+          restaurantSecretKey 
+        }),
       });
       const data = await res.json();
+      
+      if (!res.ok) {
+        setResponse({ error: data.detail || `HTTP ${res.status}: ${res.statusText}` });
+        return;
+      }
+      
       setResponse(data);
     } catch (error) {
       setResponse({ error: "Network error" });

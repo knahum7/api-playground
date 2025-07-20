@@ -31,11 +31,25 @@ const Page = () => {
     try {
       const res = await fetch("http://localhost:8000/api/getir/restaurants/status/close", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, timeOffMinutes: timeOffAmount }),
+        headers: { 
+          "Content-Type": "application/json",
+          "token": token
+        },
+        body: JSON.stringify({ timeOffAmount: timeOffAmount }),
       });
       const data = await res.json();
-      setResponse(data);
+      
+      if (!res.ok) {
+        setResponse({ error: data.detail || `HTTP ${res.status}: ${res.statusText}` });
+        return;
+      }
+      
+      // Handle both string and object responses
+      if (typeof data === "string") {
+        setResponse({ message: data });
+      } else {
+        setResponse(data);
+      }
     } catch (error) {
       setResponse({ error: "Network error" });
     } finally {

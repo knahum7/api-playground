@@ -24,10 +24,18 @@ const Page = () => {
     try {
       const res = await fetch("http://localhost:8000/api/getir/restaurants/status/open", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
+        headers: { 
+          "Content-Type": "application/json",
+          "token": token
+        },
       });
       const data = await res.json();
+      
+      if (!res.ok) {
+        setResponse({ error: data.detail || `HTTP ${res.status}: ${res.statusText}` });
+        return;
+      }
+      
       setResponse(data);
     } catch (error) {
       setResponse({ error: "Network error" });
