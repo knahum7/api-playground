@@ -32,15 +32,22 @@ const Page = () => {
       formData.append("password", password);
       formData.append("grant_type", "client_credentials");
 
-      const res = await fetch("/api/deliveryhero/login", {
+      const res = await fetch("/api/deliveryhero/v2/login", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData.toString(),
       });
+      
       const data = await res.json();
+      
+      if (!res.ok) {
+        setResponse({ error: data.error || `HTTP ${res.status}: ${res.statusText}` });
+        return;
+      }
+      
       setResponse(data);
     } catch (error) {
-      setResponse({ error: "Network error" });
+      setResponse({ error: "Network error. Please check your connection and try again." });
     } finally {
       setLoading(false);
     }
@@ -136,4 +143,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Page; 
