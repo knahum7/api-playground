@@ -71,7 +71,7 @@ const Page = () => {
     setGetResponse(null);
     setGetError(null);
     try {
-      const res = await fetch(`/api/deliveryhero/v2/chains/${chainCode}/remoteVendors/${posVendorId}/availability`, {
+      const res = await fetch(`http://localhost:8000/api/deliveryhero/v2/chains/${chainCode}/remoteVendors/${posVendorId}/availability`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -131,7 +131,7 @@ const Page = () => {
         }
       }
 
-      const res = await fetch(`/api/deliveryhero/v2/chains/${chainCode}/remoteVendors/${posVendorId}/availability`, {
+      const res = await fetch(`http://localhost:8000/api/deliveryhero/v2/chains/${chainCode}/remoteVendors/${posVendorId}/availability`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

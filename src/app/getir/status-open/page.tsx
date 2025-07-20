@@ -22,9 +22,10 @@ const Page = () => {
     setLoading(true);
     setResponse(null);
     try {
-      const res = await fetch("/api/getir/restaurants/status/open", {
-        method: "PUT",
-        headers: { Authorization: token },
+      const res = await fetch("http://localhost:8000/api/getir/restaurants/status/open", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
       });
       const data = await res.json();
       setResponse(data);

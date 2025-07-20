@@ -54,12 +54,12 @@ const Page = () => {
     setError(null);
     try {
       const basicAuth = btoa(`${apiKey}:${apiSecret}`);
-      const res = await fetch(`/api/trendyol/integrator/store/meal/suppliers/${supplierId}/stores/${storeId}/working-hours`, {
+      const res = await fetch(`http://localhost:8000/api/trendyol/integrator/store/meal/suppliers/${supplierId}/stores/${storeId}/working-hours`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Basic ${basicAuth}`,
-          "x-integrator-info": `${supplierId} - ${integrator}`,
+          "X-Integrator-Info": `${supplierId} - ${integrator}`,
         },
         body: JSON.stringify({ workingHours }),
       });

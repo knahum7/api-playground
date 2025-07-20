@@ -29,10 +29,10 @@ const Page = () => {
     setLoading(true);
     setResponse(null);
     try {
-      const res = await fetch("/api/getir/restaurants/status/close", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", token },
-        body: JSON.stringify({ timeOffAmount }),
+      const res = await fetch("http://localhost:8000/api/getir/restaurants/status/close", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, timeOffMinutes: timeOffAmount }),
       });
       const data = await res.json();
       setResponse(data);

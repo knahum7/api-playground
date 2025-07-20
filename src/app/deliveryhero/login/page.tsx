@@ -27,15 +27,14 @@ const Page = () => {
     setLoading(true);
     setResponse(null);
     try {
-      const formData = new URLSearchParams();
-      formData.append("username", username);
-      formData.append("password", password);
-      formData.append("grant_type", "client_credentials");
-
-      const res = await fetch("/api/deliveryhero/v2/login", {
+      const res = await fetch("http://localhost:8000/api/deliveryhero/v2/login", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString(),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          grant_type: "client_credentials"
+        }),
       });
       
       const data = await res.json();

@@ -49,11 +49,11 @@ const Page = () => {
     setResponse(null);
     try {
       const basicAuth = btoa(`${apiKey}:${apiSecret}`);
-      const res = await fetch(`/api/trendyol/integrator/store/meal/suppliers/${supplierId}/stores?page=${page}&size=${size}`, {
+      const res = await fetch(`http://localhost:8000/api/trendyol/integrator/store/meal/suppliers/${supplierId}/stores?page=${page}&size=${size}`, {
         method: "GET",
         headers: {
           "Authorization": `Basic ${basicAuth}`,
-          "x-integrator-info": `${supplierId} - ${integrator}`,
+          "X-Integrator-Info": `${supplierId} - ${integrator}`,
         },
       });
       const data = await res.json();
