@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dükkan Cepte - API Testing Platform
 
-## Getting Started
+This is a [Next.js](https://nextjs.org) project that provides a comprehensive testing interface for the Dükkan Cepte API integration platform, supporting Getir, Trendyol, and DeliveryHero platforms.
 
-First, run the development server:
+## 🚀 Getting Started
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Prerequisites
+
+1. **FastAPI Backend**: Ensure the FastAPI server is running
+2. **Supabase Database**: Set up with required tables
+3. **Environment Variables**: Configure your `.env.local` file
+
+### Quick Start
+
+1. **Start the FastAPI Backend**:
+   ```bash
+   cd fastapi-api
+   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+   ```
+
+4. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser** to [http://localhost:3000](http://localhost:3000)
+
+## 📱 Available Testing Pages
+
+### Getir Platform
+- **Login**: `/getir/login` - Test authentication with app and restaurant secret keys
+- **Restaurant Info**: `/getir/restaurant-info` - Fetch restaurant details using token
+- **Open Restaurant**: `/getir/status-open` - Open restaurant status
+- **Close Restaurant**: `/getir/status-close` - Close restaurant with time-off options
+- **Working Hours**: `/getir/working-hours` - Get and update working hours
+
+### Trendyol Platform
+- **Restaurant Info**: `/trendyol/restaurant-info` - Get store information with Basic Auth
+- **Status Management**: `/trendyol/status` - Update store open/close status
+- **Working Hours**: `/trendyol/working-hours` - Manage store working hours
+
+### DeliveryHero Platform
+- **Login**: `/deliveryhero/login` - Authenticate with username/password (form-encoded)
+- **Availability**: `/deliveryhero/availability` - Get and update availability status
+
+## 🔧 Features
+
+- **Interactive Testing**: Real-time API testing with immediate feedback
+- **Error Handling**: Comprehensive error display and validation
+- **Token Management**: Copy tokens to clipboard for easy testing
+- **Form Validation**: Client-side validation for all inputs
+- **Responsive Design**: Works on desktop and mobile devices
+- **Accessibility**: Full keyboard navigation and screen reader support
+
+## 📊 API Documentation
+
+- **Interactive Docs**: [http://localhost:8000/docs](http://localhost:8000/docs) - Swagger UI
+- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc) - Clean documentation
+- **OpenAPI Spec**: [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
+
+## 🛠️ Technology Stack
+
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **Backend**: FastAPI, Python, Pydantic
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Header-based tokens, Bearer tokens, Basic Auth
+- **Validation**: Pydantic models with comprehensive type checking
+
+## 📁 Project Structure
+
+```
+API_Playground/
+├── src/
+│   └── app/
+│       ├── getir/           # Getir platform testing
+│       ├── trendyol/        # Trendyol platform testing
+│       ├── deliveryhero/    # DeliveryHero platform testing
+│       ├── globals.css      # Global styles
+│       ├── layout.tsx       # Root layout
+│       └── page.tsx         # Home page
+├── public/                  # Static assets
+├── package.json
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧪 Testing Workflow
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Start Backend**: Ensure FastAPI server is running
+2. **Navigate to Platform**: Choose Getir, Trendyol, or DeliveryHero
+3. **Test Authentication**: Use login pages to get tokens
+4. **Test Endpoints**: Use the various testing pages
+5. **Check Responses**: View real-time API responses
+6. **Debug Issues**: Use browser console for detailed error information
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Deployment
 
-## Learn More
+This is a testing platform. For production deployment:
 
-To learn more about Next.js, take a look at the following resources:
+1. Configure production environment variables
+2. Set up proper CORS settings
+3. Use production database connections
+4. Implement proper security measures
+5. Set up monitoring and logging
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📝 Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- All API calls are made to `http://localhost:8000`
+- Authentication tokens are stored in browser memory only
+- No sensitive data is persisted in the frontend
+- All validation is handled by the backend
+- Error messages are displayed in real-time
 
-## Deploy on Vercel
+## 🤝 Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Test new features using the provided pages
+2. Report issues with detailed error information
+3. Follow the existing code structure and patterns
+4. Ensure all changes work across all platforms
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📚 Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Pydantic Documentation](https://pydantic-docs.helpmanual.io/)
