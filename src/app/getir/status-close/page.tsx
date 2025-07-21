@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-const TIME_OFF_OPTIONS = [15, 30, 45];
-
 type CloseResponse = {
   error?: string;
   message?: string;
@@ -11,16 +9,11 @@ type CloseResponse = {
 
 const Page = () => {
   const [token, setToken] = useState("");
-  const [timeOffAmount, setTimeOffAmount] = useState<number>(TIME_OFF_OPTIONS[0]);
   const [response, setResponse] = useState<CloseResponse | string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleTokenChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setToken(event.target.value);
-  };
-
-  const handleTimeOffChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTimeOffAmount(Number(event.target.value));
   };
 
 
@@ -84,21 +77,6 @@ const Page = () => {
           tabIndex={0}
           required
         />
-        <label htmlFor="timeOffAmount" className="font-medium">Time Off Amount (minutes)</label>
-        <select
-          id="timeOffAmount"
-          name="timeOffAmount"
-          value={timeOffAmount}
-          onChange={handleTimeOffChange}
-          className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          aria-label="Time Off Amount"
-          tabIndex={0}
-          required
-        >
-          {TIME_OFF_OPTIONS.map((option) => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
         <button
           type="submit"
           className="mt-4 bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -29,9 +29,12 @@ const Page = () => {
       const res = await fetch("http://localhost:8000/api/getir/auth/login", {
         method: "POST",
         headers: {
-          "Authorization":
-            "Basic " + btoa(`${appSecretKey}:${restaurantSecretKey}`),
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          appSecretKey,
+          restaurantSecretKey,
+        }),
       });
       const data = await res.json();
       
