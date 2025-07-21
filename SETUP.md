@@ -37,6 +37,7 @@ CREATE TABLE getir_restaurants (
   restaurant_secret_key TEXT NOT NULL,
   app_secret_key TEXT NOT NULL,
   token TEXT NOT NULL,
+  token_created_at TIMESTAMP,
   averagePreparationTime TEXT DEFAULT '30',
   status TEXT DEFAULT '0',
   isCourierAvailable TEXT DEFAULT 'true',
@@ -69,6 +70,7 @@ CREATE TABLE deliveryhero_restaurants (
   username TEXT NOT NULL,
   password TEXT NOT NULL,
   access_token TEXT NOT NULL,
+  token_expires_at TIMESTAMP,
   chainCode TEXT NOT NULL,
   posVendorId TEXT NOT NULL,
   platformRestaurantId TEXT NOT NULL,
@@ -110,12 +112,12 @@ CREATE TABLE deliveryhero_restaurants (
 ## 📡 API Endpoints
 
 ### Getir Integration
-- **Login**: `POST /api/getir/auth/login`
-- **Restaurant Info**: `GET /api/getir/restaurants`
-- **Open Restaurant**: `PUT /api/getir/restaurants/status/open`
-- **Close Restaurant**: `PUT /api/getir/restaurants/status/close`
-- **Working Hours**: `GET /api/getir/restaurants/working-hours`
-- **Update Working Hours**: `PUT /api/getir/restaurants/working-hours`
+- **Login**: `POST /api/getir/auth/login` (returns a token valid for 1 hour)
+- **Restaurant Info**: `GET /api/getir/restaurants` (requires valid token)
+- **Open Restaurant**: `PUT /api/getir/restaurants/status/open` (requires valid token)
+- **Close Restaurant**: `PUT /api/getir/restaurants/status/close` (requires valid token)
+- **Working Hours**: `GET /api/getir/restaurants/working-hours` (requires valid token)
+- **Update Working Hours**: `PUT /api/getir/restaurants/working-hours` (requires valid token)
 
 ### Trendyol Integration
 - **Get Stores**: `GET /api/trendyol/stores`
@@ -123,9 +125,9 @@ CREATE TABLE deliveryhero_restaurants (
 - **Update Working Hours**: `PUT /api/trendyol/stores/{store_id}/working-hours`
 
 ### DeliveryHero Integration
-- **Login**: `POST /api/deliveryhero/v2/login` (form-encoded)
-- **Availability Status**: `GET /api/deliveryhero/v2/chains/{chainCode}/remoteVendors/{posVendorId}/availability`
-- **Update Availability**: `PUT /api/deliveryhero/v2/chains/{chainCode}/remoteVendors/{posVendorId}/availability`
+- **Login**: `POST /api/deliveryhero/v2/login` (form-encoded, returns a short-lived token)
+- **Availability Status**: `GET /api/deliveryhero/v2/chains/{chainCode}/remoteVendors/{posVendorId}/availability` (requires valid, non-expired token)
+- **Update Availability**: `PUT /api/deliveryhero/v2/chains/{chainCode}/remoteVendors/{posVendorId}/availability` (requires valid, non-expired token)
 
 ## 🔗 Project Structure
 
@@ -172,7 +174,8 @@ You can test the API endpoints using:
 
 ## 📝 Notes
 
-- **Authentication**: Getir and Trendyol use header-based tokens, DeliveryHero uses Bearer tokens
+- **Authentication**: Getir and Trendyol use header-based tokens, DeliveryHero uses Bearer tokens (short-lived)
+- **Token Expiration**: Tokens for Getir (1 hour) and DeliveryHero (15-60 minutes) expire; a 401 error means you must log in again to get a new token.
 - **Data Formats**: Working hours are stored as JSON arrays
 - **Validation**: All endpoints include comprehensive input validation
 - **Error Handling**: Consistent error responses across all platforms

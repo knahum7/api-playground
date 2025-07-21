@@ -43,7 +43,7 @@ This is a [Next.js](https://nextjs.org) project that provides a comprehensive te
 - **Login**: `/getir/login` - Test authentication with app and restaurant secret keys
 - **Restaurant Info**: `/getir/restaurant-info` - Fetch restaurant details using token
 - **Open Restaurant**: `/getir/status-open` - Open restaurant status
-- **Close Restaurant**: `/getir/status-close` - Close restaurant with time-off options
+- **Close Restaurant**: `/getir/status-close` - Close restaurant
 - **Working Hours**: `/getir/working-hours` - Get and update working hours
 
 ### Trendyol Platform
@@ -52,14 +52,14 @@ This is a [Next.js](https://nextjs.org) project that provides a comprehensive te
 - **Working Hours**: `/trendyol/working-hours` - Manage store working hours
 
 ### DeliveryHero Platform
-- **Login**: `/deliveryhero/login` - Authenticate with username/password (form-encoded)
-- **Availability**: `/deliveryhero/availability` - Get and update availability status
+- **Login**: `/deliveryhero/login` - Authenticate with username/password (form-encoded, returns a short-lived token)
+- **Availability**: `/deliveryhero/availability` - Get and update availability status (requires valid, non-expired token)
 
 ## 🔧 Features
 
 - **Interactive Testing**: Real-time API testing with immediate feedback
-- **Error Handling**: Comprehensive error display and validation
-- **Token Management**: Copy tokens to clipboard for easy testing
+- **Error Handling**: Comprehensive error display and validation. Expired tokens will result in a 401 error; log in again to refresh your token.
+- **Token Management**: Copy tokens to clipboard for easy testing. Tokens for Getir and DeliveryHero expire after a set period; you must re-authenticate to obtain a new token.
 - **Form Validation**: Client-side validation for all inputs
 - **Responsive Design**: Works on desktop and mobile devices
 - **Accessibility**: Full keyboard navigation and screen reader support
@@ -75,7 +75,7 @@ This is a [Next.js](https://nextjs.org) project that provides a comprehensive te
 - **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
 - **Backend**: FastAPI, Python, Pydantic
 - **Database**: Supabase (PostgreSQL)
-- **Authentication**: Header-based tokens, Bearer tokens, Basic Auth
+- **Authentication**: Header-based tokens (Getir, Trendyol), Bearer tokens (DeliveryHero, short-lived), Basic Auth
 - **Validation**: Pydantic models with comprehensive type checking
 
 ## 📁 Project Structure
@@ -99,7 +99,7 @@ API_Playground/
 
 1. **Start Backend**: Ensure FastAPI server is running
 2. **Navigate to Platform**: Choose Getir, Trendyol, or DeliveryHero
-3. **Test Authentication**: Use login pages to get tokens
+3. **Test Authentication**: Use login pages to get tokens (note: tokens expire; re-login as needed)
 4. **Test Endpoints**: Use the various testing pages
 5. **Check Responses**: View real-time API responses
 6. **Debug Issues**: Use browser console for detailed error information
@@ -118,6 +118,7 @@ This is a testing platform. For production deployment:
 
 - All API calls are made to `http://localhost:8000`
 - Authentication tokens are stored in browser memory only
+- Tokens for Getir and DeliveryHero expire after a set period; re-authenticate as needed
 - No sensitive data is persisted in the frontend
 - All validation is handled by the backend
 - Error messages are displayed in real-time
