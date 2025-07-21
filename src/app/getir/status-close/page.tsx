@@ -35,7 +35,7 @@ const Page = () => {
           "Content-Type": "application/json",
           "token": token
         },
-        body: JSON.stringify({ timeOffAmount: timeOffAmount }),
+        // Remove body
       });
       const data = await res.json();
       

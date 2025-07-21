@@ -9,7 +9,7 @@ type Restaurant = {
   supplier_id: string;
   working_status: string;
   address: string;
-  location: { latitude: string; longitude: string };
+  location: { [key: string]: string };
   average_order_preparation_time_in_min: number;
   delivery_type: string;
   phone_number: string;
@@ -17,7 +17,7 @@ type Restaurant = {
   creation_date: string;
   last_modified_date: string;
   working_hours: Array<{
-    dayOfWeek: string;
+    dayOfWeek: string; // Enum as string
     openingTime: string;
     closingTime: string;
   }>;

@@ -28,11 +28,10 @@ const Page = () => {
     try {
       const res = await fetch("http://localhost:8000/api/getir/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          appSecretKey, 
-          restaurantSecretKey 
-        }),
+        headers: {
+          "Authorization":
+            "Basic " + btoa(`${appSecretKey}:${restaurantSecretKey}`),
+        },
       });
       const data = await res.json();
       
