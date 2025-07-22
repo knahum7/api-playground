@@ -76,6 +76,12 @@ export default function Home() {
             >
               • Working Hours Management
             </Link>
+            <Link
+              href="/getir/menu"
+              className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
+            >
+              • Menu Information
+            </Link>
           </div>
         </div>
 
@@ -108,6 +114,18 @@ export default function Home() {
               className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
             >
               • Store Working Hours
+            </Link>
+            <Link
+              href="/trendyol/menu"
+              className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
+            >
+              • Menu Information
+            </Link>
+            <Link
+              href="/trendyol/delivery-areas"
+              className="block text-sm text-blue-600 hover:text-blue-800 hover:underline"
+            >
+              • Delivery Areas
             </Link>
           </div>
         </div>
