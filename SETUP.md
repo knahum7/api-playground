@@ -118,11 +118,14 @@ CREATE TABLE deliveryhero_restaurants (
 - **Close Restaurant**: `PUT /api/getir/restaurants/status/close` (requires valid token)
 - **Working Hours**: `GET /api/getir/restaurants/working-hours` (requires valid token)
 - **Update Working Hours**: `PUT /api/getir/restaurants/working-hours` (requires valid token)
+- **Menu**: `GET /api/getir/menu` (requires valid token) (NEW)
 
 ### Trendyol Integration
 - **Get Stores**: `GET /api/trendyol/stores`
 - **Update Status**: `PUT /api/trendyol/stores/{store_id}/status`
 - **Update Working Hours**: `PUT /api/trendyol/stores/{store_id}/working-hours`
+- **Menu**: `GET /api/trendyol/menu` (NEW)
+- **Delivery Areas**: `GET /api/trendyol/delivery-areas` (NEW)
 
 ### DeliveryHero Integration
 - **Login**: `POST /api/deliveryhero/v2/login` (form-encoded, returns a short-lived token)
@@ -154,11 +157,14 @@ API_Playground/
 │       │   ├── restaurant-info/
 │       │   ├── status-open/
 │       │   ├── status-close/
-│       │   └── working-hours/
+│       │   ├── working-hours/
+│       │   └── menu/           # Getir menu testing (NEW)
 │       ├── trendyol/
 │       │   ├── restaurant-info/
 │       │   ├── status/
-│       │   └── working-hours/
+│       │   ├── working-hours/
+│       │   ├── menu/           # Trendyol menu testing (NEW)
+│       │   └── delivery-areas/ # Trendyol delivery areas testing (NEW)
 │       └── deliveryhero/
 │           ├── login/
 │           └── availability/
@@ -169,7 +175,7 @@ API_Playground/
 You can test the API endpoints using:
 - **Interactive Documentation**: `http://localhost:8000/docs`
 - **ReDoc Documentation**: `http://localhost:8000/redoc`
-- **Frontend Testing Pages**: Navigate through the app
+- **Frontend Testing Pages**: Navigate through the app, including new menu and delivery areas pages (NEW)
 - **Postman/cURL**: Direct API testing
 
 ## 📝 Notes
@@ -180,6 +186,7 @@ You can test the API endpoints using:
 - **Validation**: All endpoints include comprehensive input validation
 - **Error Handling**: Consistent error responses across all platforms
 - **Type Safety**: Pydantic models ensure data integrity
+- **Consistent Navigation**: All test pages now feature a home icon in the top-left for easy return to the main page (NEW)
 
 ## 🚀 Deployment
 

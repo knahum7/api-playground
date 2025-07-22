@@ -45,11 +45,14 @@ This is a [Next.js](https://nextjs.org) project that provides a comprehensive te
 - **Open Restaurant**: `/getir/status-open` - Open restaurant status
 - **Close Restaurant**: `/getir/status-close` - Close restaurant
 - **Working Hours**: `/getir/working-hours` - Get and update working hours
+- **Menu Information**: `/getir/menu` - Fetch and view restaurant menu (NEW)
 
 ### Trendyol Platform
 - **Restaurant Info**: `/trendyol/restaurant-info` - Get store information with Basic Auth
 - **Status Management**: `/trendyol/status` - Update store open/close status
 - **Working Hours**: `/trendyol/working-hours` - Manage store working hours
+- **Menu Information**: `/trendyol/menu` - Fetch and view store menu (NEW)
+- **Delivery Areas**: `/trendyol/delivery-areas` - Fetch and view store delivery areas (NEW)
 
 ### DeliveryHero Platform
 - **Login**: `/deliveryhero/login` - Authenticate with username/password (form-encoded, returns a short-lived token)
@@ -63,6 +66,7 @@ This is a [Next.js](https://nextjs.org) project that provides a comprehensive te
 - **Form Validation**: Client-side validation for all inputs
 - **Responsive Design**: Works on desktop and mobile devices
 - **Accessibility**: Full keyboard navigation and screen reader support
+- **Consistent Navigation**: All test pages now feature a home icon in the top-left for easy return to the main page (NEW)
 
 ## 📊 API Documentation
 
@@ -85,7 +89,10 @@ API_Playground/
 ├── src/
 │   └── app/
 │       ├── getir/           # Getir platform testing
+│       │   └── menu/        # Getir menu testing (NEW)
 │       ├── trendyol/        # Trendyol platform testing
+│       │   ├── menu/        # Trendyol menu testing (NEW)
+│       │   └── delivery-areas/ # Trendyol delivery areas testing (NEW)
 │       ├── deliveryhero/    # DeliveryHero platform testing
 │       ├── globals.css      # Global styles
 │       ├── layout.tsx       # Root layout
@@ -122,6 +129,7 @@ This is a testing platform. For production deployment:
 - No sensitive data is persisted in the frontend
 - All validation is handled by the backend
 - Error messages are displayed in real-time
+- All test pages now feature a home icon for consistent navigation (NEW)
 
 ## 🤝 Contributing
 
